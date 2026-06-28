@@ -10,3 +10,10 @@
   margin-inline: auto;
   padding-inline: 1.25rem;
 }
+
+@layer base {
+  .dark {
+    background-color: #171923;
+    color: white;
+  }
+}
