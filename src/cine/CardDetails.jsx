@@ -23,6 +23,8 @@ export default function CardDetails({ onClose }) {
                     className="rounded overflow-hidden"
                     src={getImgUrl(item.cover)}
                     alt={item.title}
+                    width={"50px"}
+                    height={"50px"}
                   />
                   <div>
                     <h3 className="text-base md:text-xl font-bold">
