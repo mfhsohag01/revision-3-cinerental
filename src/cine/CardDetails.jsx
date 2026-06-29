@@ -1,19 +1,18 @@
 import { useContext } from "react";
-import { MovieContext } from "../context";
-
 import Delete from "../assets/delete.svg";
 import Checkout from "../assets/icons/checkout.svg";
+import { MovieContext } from "../context";
 import { getImgUrl } from "../utils/cine-utility";
 
 export default function CardDetails({ onClose }) {
-  const { cartData, setCartData } = useContext(MovieContext);
-  console.log(cartData);
+  const { state, dispatch } = useContext(MovieContext);
+  const cartData = state.cartData;
 
   const handleDeleteCart = (event, id) => {
     event.preventDefault();
-    const filteredItem = cartData.filter((item) => item.id !== id);
-    setCartData([...filteredItem]);
+    dispatch({ type: "REMOVE_FROM_CART", payload: { id } });
   };
+
   return (
     <div className="fixed top-0 left-0 w-screen h-screen z-50 bg-black/60 backdrop-blur-sm">
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[420px] sm:max-w-[600px] lg:max-w-[790px] p-4 max-h-[90vh] overflow-auto">
@@ -32,8 +31,8 @@ export default function CardDetails({ onClose }) {
                       className="rounded overflow-hidden"
                       src={getImgUrl(item.cover)}
                       alt={item.title}
-                      width={"50px"}
-                      height={"50px"}
+                      width="50px"
+                      height="50px"
                     />
                     <div>
                       <h3 className="text-base md:text-xl font-bold">
@@ -48,7 +47,7 @@ export default function CardDetails({ onClose }) {
                   <div className="flex justify-between gap-4 items-center">
                     <button
                       className="bg-[#D42967] rounded-md p-2 md:px-4 inline-flex items-center space-x-2 text-white"
-                      onClick={() => handleDeleteCart(event, item.id)}
+                      onClick={(event) => handleDeleteCart(event, item.id)}
                     >
                       <img className="w-5 h-5" src={Delete} alt="delete" />
                       <span className="max-md:hidden">Remove</span>
