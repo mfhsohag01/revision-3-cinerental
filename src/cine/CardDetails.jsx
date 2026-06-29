@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { toast } from "react-toastify";
 import Delete from "../assets/delete.svg";
 import Checkout from "../assets/icons/checkout.svg";
 import { MovieContext } from "../context";
@@ -7,10 +8,14 @@ import { getImgUrl } from "../utils/cine-utility";
 export default function CardDetails({ onClose }) {
   const { state, dispatch } = useContext(MovieContext);
   const cartData = state.cartData;
+  const totalPrice = cartData.reduce((total, item) => total + item.price, 0);
 
-  const handleDeleteCart = (event, id) => {
+  const handleDeleteCart = (event, item) => {
     event.preventDefault();
-    dispatch({ type: "REMOVE_FROM_CART", payload: { id } });
+    dispatch({ type: "REMOVE_FROM_CART", payload: { id: item.id } });
+    toast.success(`Movie ${item.title} removed from cart`, {
+      position: "bottom-right",
+    });
   };
 
   return (
@@ -47,7 +52,7 @@ export default function CardDetails({ onClose }) {
                   <div className="flex justify-between gap-4 items-center">
                     <button
                       className="bg-[#D42967] rounded-md p-2 md:px-4 inline-flex items-center space-x-2 text-white"
-                      onClick={(event) => handleDeleteCart(event, item.id)}
+                      onClick={(event) => handleDeleteCart(event, item)}
                     >
                       <img className="w-5 h-5" src={Delete} alt="delete" />
                       <span className="max-md:hidden">Remove</span>
@@ -57,6 +62,9 @@ export default function CardDetails({ onClose }) {
               ))
             )}
           </div>
+          <p className="text-right font-bold text-xl mb-4">
+            Total: ${totalPrice}
+          </p>
           <div className="flex items-center justify-end gap-2">
             <a
               className="rounded-md p-2 md:px-4 inline-flex items-center space-x-2 bg-primary text-[#171923] text-sm"
